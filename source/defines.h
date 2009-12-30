@@ -1,0 +1,102 @@
+#ifndef _DEFINES
+
+#define _DEFINES
+
+#define GAMENAME        L"NXOGRE PINBALL"
+#define GAME_VER		1.0
+
+#define SAFE_DELETE(p) { if(p) { delete (p); (p)=NULL; } }
+#define SAFE_RELEASE(p) { if(p) { (p)->Release(); (p)=NULL; } }
+
+#define INTERMISSION_FADE_RATE 0.05f
+
+#define B_ 1
+#define I_ 2
+#define N_ 3
+#define G_ 4
+#define O_ 5
+
+#define HORIZ_0 0
+#define HORIZ_1 1
+#define HORIZ_2 2
+#define HORIZ_3 3
+#define HORIZ_4 4
+
+#define VERT_0 5
+#define VERT_1 6
+#define VERT_2 7
+#define VERT_3 8
+#define VERT_4 9
+
+#define DIAG_1  10
+#define DIAG_0  11
+#define I_BINGO 13
+#define T_BINGO 14
+
+#define CORNERS_BINGO 15
+#define COVERALL_BINGO 16
+#define FRAME_BINGO 17
+
+#define GAMESTATE_GOTO_INTERMISSION  0
+#define GAMESTATE_INIT  1
+#define GAMESTATE_RUNNING   2
+#define GAMESTATE_RESETBALL 3
+#define GAMESTATE_BALLRESET 4
+#define GAMESTATE_POSTSCOREERROR 5
+#define GAMESTATE_INTERMISSION 6
+#define GAMESTATE_GETSTANDINGSERROR 7
+#define GAMESTATE_INIT_INTERMISSION 8
+
+#define INTERMISSION_STATE_PREGAME 0
+#define INTERMISSION_STATE_QUESTION_SEND_SCORE 1
+#define INTERMISSION_STATE_ENTER_INITIALS 2
+#define INTERMISSION_STATE_SCORE_POSTED 3
+#define INTERMISSION_STATE_INET_ERROR_STANDINGS 4
+#define INTERMISSION_STATE_INET_ERROR_POSTSCORE 5
+
+
+#define BALLSTATE_DRAIN 0
+#define BALLSTATE_RESET 1
+#define BALLSTATE_PRIMED 2
+#define BALLSTATE_SHOT	3
+#define BALLSTATE_INPLAY 4
+
+#define SCORE_HOLD      100
+#define SCORE_KICKER    25
+#define SCORE_DRAIN     1000
+#define SCORE_RAIL      100
+#define SCORE_TARGET_LIT    100
+#define SCORE_TARGET_DIM    500
+#define SCORE_BINGO_MULTIPLIER  5000
+#define SCORE_LETTER_SWITCHER   1000
+#define SCORE_THUMPER_BUMPER    100
+#define SCORE_DAUBER    500
+#define SCORE_ALLNUMS 10000
+#define SCORE_TRIGGERLIGHT 250
+
+#define COLOR_HOLD				Vector3(0.0,1.0,0.0)
+#define COLOR_KICKER			Vector3(.43,.85,.57)
+#define COLOR_DRAIN				Vector3(1.0,0.0,0.0)
+#define COLOR_RAIL				Vector3(.5,0.0,.5)
+#define COLOR_TARGET_LIT		Vector3(.79,1.0,.43)
+#define COLOR_TARGET_DIM		Vector3(1.0,1.0,1.0)
+#define COLOR_BINGO_MULTIPLIER  Vector3(.13,.54,.13)
+#define COLOR_SPINNER			Vector3(0.0,0.6,1.0)
+#define COLOR_LETTER_SWITCHER   Vector3(1.0,1.0,1.0)
+#define COLOR_THUMPER_BUMPER    Vector3(.92,.78,.61)
+#define COLOR_DAUBER			Vector3(0.0,0.0,1.0)
+
+#define NUM_TEXTURE_GREEN 0
+#define NUM_TEXTURE_BLACK 1
+#define NUM_TEXTURE_WHITE 2
+#define NUM_USE_COLOR   0
+
+#define LANE_ANGLE .314
+
+#define MAX_BALLS 5
+#define MAX_BUMPS 5
+#define BUMP_DELAY 500
+
+//#define MAX_SCORECARD_NUMBER 8
+
+#endif

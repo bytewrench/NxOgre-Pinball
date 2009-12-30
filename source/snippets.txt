@@ -1,0 +1,480 @@
+
+/*
+void GUIbuttonPressed ( BetaGUI::Button * ref )
+{
+if ( _oldTargetBody == 0 )
+return;
+
+//=----------------------------------DFRICTION
+
+if ( ref == mEditor_Dynamic_Friction_set && timeSince >= 0.5f )
+{
+Real newFriction =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Dynamic_Friction->getValue())),
+1.0f,
+0.0f);
+setDFriction(newFriction);
+mEditor_Dynamic_Friction->setValue(StringConverter::toString(newFriction));
+timeSince = 0.0f;
+}
+
+if ( ref == mEditor_Dynamic_Friction_set && timeSince >= 0.5f )
+{
+Real newFriction =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Dynamic_Friction->getValue())
++ 0.1),
+1.0f,
+0.0f);
+setDFriction(newFriction);
+mEditor_Dynamic_Friction->setValue(StringConverter::toString(newFriction));
+timeSince = 0.0f;
+}
+
+if ( ref == mEditor_Dynamic_Friction_set && timeSince >= 0.5f )
+{
+Real newFriction =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Dynamic_Friction->getValue())
+- 0.1),
+1.0f,
+0.0f);
+setDFriction(newFriction);
+mEditor_Dynamic_Friction->setValue(StringConverter::toString(newFriction));
+timeSince = 0.0f;
+}
+//=----------------------------------SFRICTION
+
+if ( ref == mEditor_Static_Friction_set && timeSince >= 0.5f )
+{
+Real newFriction =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Static_Friction->getValue())),
+1.0f,
+0.0f);
+//setBounce(newBounce);
+setSFriction(newFriction);
+mEditor_Static_Friction->setValue(StringConverter::toString(newFriction));
+timeSince = 0.0f;
+}
+
+if ( ref == mEditor_Static_Friction_set && timeSince >= 0.5f )
+{
+Real newFriction =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Static_Friction->getValue())
++ 0.1),
+1.0f,
+0.0f);
+setSFriction(newFriction);
+mEditor_Static_Friction->setValue(StringConverter::toString(newFriction));
+timeSince = 0.0f;
+}
+
+if ( ref == mEditor_Static_Friction_set && timeSince >= 0.5f )
+{
+Real newFriction =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Static_Friction->getValue())
+- 0.1),
+1.0f,
+0.0f);
+setSFriction(newFriction);
+mEditor_Static_Friction->setValue(StringConverter::toString(newFriction));
+timeSince = 0.0f;
+}
+//=----------------------------------BOUNCE
+
+if ( ref == mEditor_Bounce_set && timeSince >= 0.5f )
+{
+Real newBounce =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Bounce->getValue())),
+1.0f,
+0.0f);
+setBounce(newBounce);
+mEditor_Bounce->setValue(StringConverter::toString(newBounce));
+timeSince = 0.0f;
+}
+
+if ( ref == mEditor_Bounce_set_up && timeSince >= 0.5f )
+{
+Real newBounce =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Bounce->getValue())
++ 0.1),
+1.0f,
+0.0f);
+setBounce(newBounce);
+mEditor_Bounce->setValue(StringConverter::toString(newBounce));
+timeSince = 0.0f;
+}
+
+if ( ref == mEditor_Bounce_set_down && timeSince >= 0.5f )
+{
+Real newBounce =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Bounce->getValue())
+- 0.1),
+1.0f,
+0.0f);
+setBounce(newBounce);
+mEditor_Bounce->setValue(StringConverter::toString(newBounce));
+timeSince = 0.0f;
+}
+
+//=----------------------------------VELOCITY
+
+if ( ref == mEditor_Velocity_set && timeSince >= 0.2f )
+{
+Real newVelocity =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Velocity->getValue())),
+250.0f,
+0.0f);
+mEditor_Velocity->setValue(StringConverter::toString(newVelocity));
+currentVelocity = newVelocity;
+timeSince = 0.0f;
+}
+
+if ( ref == mEditor_Velocity_set_up && timeSince >= 0.2f )
+{
+Real newVelocity =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Velocity->getValue())
++ 1),
+500.0f,
+100.0f);
+mEditor_Velocity->setValue(StringConverter::toString(newVelocity));
+currentVelocity = newVelocity;
+timeSince = 0.0f;
+}
+
+if ( ref == mEditor_Velocity_set_down && timeSince >= 0.2f )
+{
+Real newVelocity =
+NxMath::clamp(float(StringConverter::parseReal(mEditor_Velocity->getValue())
+- 1),
+500.0f,
+100.0f);
+mEditor_Velocity->setValue(StringConverter::toString(newVelocity));
+currentVelocity = newVelocity;
+timeSince = 0.0f;
+}
+}
+
+void createMaterialEditor ()
+{
+_oldTargetBody = 0;
+
+mEditor_Window = mGUI->createWindow(Vector4(mWindow->getWidth() - 177 - 100,
+mWindow->getHeight() - 227 - 100,
+177,
+250),
+"editor.material.window",
+BetaGUI::MOVE,
+"Material Editor");
+
+mEditor_TargetBody = mEditor_Window->createStaticText(Vector4(64, 55, 100, 22),
+"No Body");
+mEditor_TargetBody->setColour(ColourValue(0.5, 0.5, 0.5));
+mEditor_TargetBody->setParameter("char_height", "11");
+mEditor_TargetMaterial = mEditor_Window->createStaticText(Vector4(64, 32, 100, 22),
+"No Material");
+
+Ogre::OverlayContainer * cb = mEditor_Window->createStaticText(Vector4(0, 22, 64, 64),
+"");
+cb->setMaterialName("editor.material.text");
+
+mEditor_Window->createStaticText(Vector4(4, 82, 60, 22), "Bounce");
+mEditor_Bounce = createMicroText(mEditor_Window, Vector2(100, 82), 5, "1");
+
+mEditor_Bounce_set_up = mEditor_Window->createButton(Vector4(148, 82, 11, 11),
+"editor.microtext.up",
+"",
+BetaGUI::Callback(this));
+mEditor_Bounce_set_down = mEditor_Window->createButton(Vector4(148, 82 + 11, 11, 11),
+"editor.microtext.do",
+"",
+BetaGUI::Callback(this));
+mEditor_Bounce_set = mEditor_Window->createButton(Vector4(148 + 11, 82, 20, 20),
+"editor.microtext.confirm",
+"",
+BetaGUI::Callback(this));
+
+mEditor_Window->createStaticText(Vector4(4, 125, 60, 22), "StaticFriction");
+mEditor_Static_Friction = createMicroText(mEditor_Window, Vector2(100, 125), 5, "1.0");
+
+mEditor_Static_Friction_set_up = mEditor_Window->createButton(Vector4(148, 125, 11, 11),
+"editor.microtext.up",
+"",
+BetaGUI::Callback(this));
+mEditor_Static_Friction_set_down = mEditor_Window->createButton(Vector4(148, 125 + 11, 11,
+11),
+"editor.microtext.do",
+"",
+BetaGUI::Callback(this));
+mEditor_Static_Friction_set = mEditor_Window->createButton(Vector4(148 + 11, 125, 20, 20),
+"editor.microtext.confirm",
+"",
+BetaGUI::Callback(this));
+
+mEditor_Window->createStaticText(Vector4(4, 165, 60, 22), "DynamicFriction");
+mEditor_Dynamic_Friction = createMicroText(mEditor_Window, Vector2(100, 165), 5, "1.0");
+
+mEditor_Dynamic_Friction_set_up = mEditor_Window->createButton(Vector4(148, 165, 11, 11),
+"editor.microtext.up",
+"",
+BetaGUI::Callback(this));
+mEditor_Dynamic_Friction_set_down = mEditor_Window->createButton(Vector4(148, 165 + 11,
+11,  11),
+"editor.microtext.do",
+"",
+BetaGUI::Callback(this));
+mEditor_Dynamic_Friction_set = mEditor_Window->createButton(Vector4(148 + 11, 165, 20,
+20),
+"editor.microtext.confirm",
+"",
+BetaGUI::Callback(this));
+
+mEditor_Window->createStaticText(Vector4(4, 205, 60, 22), "Velocity");
+mEditor_Velocity = createMicroText(mEditor_Window, Vector2(100, 205), 5, "200");
+
+mEditor_Velocity_set_up = mEditor_Window->createButton(Vector4(148, 205, 11, 11),
+"editor.microtext.up",
+"",
+BetaGUI::Callback(this));
+mEditor_Velocity_set_down = mEditor_Window->createButton(Vector4(148, 205 + 11, 11, 11),
+"editor.microtext.do",
+"",
+BetaGUI::Callback(this));
+mEditor_Velocity_set = mEditor_Window->createButton(Vector4(148 + 11, 205, 20, 20),
+"editor.microtext.confirm",
+"",
+BetaGUI::Callback(this));
+
+mDebug_Window = mGUI->createWindow(Vector4(mWindow->getWidth() - 100,
+mWindow->getHeight() - 227 - 100,
+177,
+250),
+"editor.material.window",
+BetaGUI::MOVE,
+"Fancy");
+
+mDebug_Window->createStaticText(Vector4(4, 22, 198, 40), "debug:");
+}
+
+BetaGUI::TextInput * createMicroText ( BetaGUI::Window * w, Vector2 pos, unsigned int length,
+Ogre::String val )
+{
+BetaGUI::TextInput * t = w->createTextInput(Vector4(pos.x, pos.y, 50, 22),
+"editor.microtext",
+val,
+length);
+t->mCP->setParameter("char_height", "13.5");
+t->mCP->setTop(6);
+return t;
+}
+*/
+/*
+Vector3 camPos = mCamera->getPosition();
+Vector3 camTarget = mCamera->getRealDirection();
+gui_fps->setCaption("XYZ: " + 
+Ogre::StringConverter::toString(camPos.x) + "-" +
+Ogre::StringConverter::toString(camPos.y) + "-" +
+Ogre::StringConverter::toString(camPos.z) + "Look:" +
+Ogre::StringConverter::toString(camTarget.x) + "-" + 
+Ogre::StringConverter::toString(camTarget.y) + "-" + 
+Ogre::StringConverter::toString(camTarget.z)  
+);
+
+*/
+
+/*
+material * mat = _oldTargetBody->getMaterial();
+if ( mat == 0 )
+return;
+mEditor_TargetBody->setCaption(_oldTargetBody->getName());
+mEditor_TargetMaterial->setCaption(mat->getName());
+mEditor_Velocity->setValue(StringConverter::toString(currentVelocity));
+mEditor_Static_Friction->setValue(StringConverter::toString(mat->mMat->getStaticFriction()));
+mEditor_Dynamic_Friction->setValue(StringConverter::toString(mat->mMat->getDynamicFriction()));
+mEditor_Bounce->setValue(StringConverter::toString(mat->mMat->getRestitution()));
+*/
+//if ( _oldTargetBody == 0 )
+//return;
+/*
+if ( isKeyDown(RESET_BALL) )
+{
+_oldTargetBody->setGlobalPosition(5, 2, - 50);
+_oldTargetBody->setLinearVelocity(Vector3(0, 0, 0), 0);
+}
+
+if ( isKeyDown(FIRE_BALL) )
+{
+_oldTargetBody->wakeUp();
+_oldTargetBody->setAngularDamping(0);
+_oldTargetBody->setLinearVelocity(Vector3(0, 0, 100), currentVelocity);
+}
+
+if ( isKeyDown(MINUS_VEL) )
+{
+currentVelocity --;
+}
+
+if ( isKeyDown(PLUS_VEL) )
+{
+currentVelocity ++;
+}
+
+//=-------------------------------------		
+float strength = 150;
+
+if ( isKeyDown(Z) )
+{
+_oldTargetBody->addTorque(Ogre::Vector3(0, 0, strength));
+}
+
+if ( isKeyDown(NEG_Z) )
+{
+_oldTargetBody->addTorque(Ogre::Vector3(0, 0, - strength));
+}
+
+if ( isKeyDown(X) )
+{
+_oldTargetBody->addTorque(Ogre::Vector3(strength, 0, 0));
+}
+
+if ( isKeyDown(NEG_X) )
+{
+_oldTargetBody->addTorque(Ogre::Vector3(- strength, 0, 0));
+}
+
+if ( isKeyDown(Y) )
+{
+_oldTargetBody->addTorque(Ogre::Vector3(0, strength, 0));
+}
+
+if ( isKeyDown(NEG_Y) )
+{
+_oldTargetBody->addTorque(Ogre::Vector3(0, - strength, 0));
+}
+*/
+
+
+//bool f_left, f_right;
+
+/*
+BetaGUI::Window * mEditor_Window;
+BetaGUI::Window * mDebug_Window;
+
+BetaGUI::TextInput * mEditor_Velocity;
+BetaGUI::Button * mEditor_Velocity_set;
+BetaGUI::Button * mEditor_Velocity_set_up;
+BetaGUI::Button * mEditor_Velocity_set_down;
+
+BetaGUI::TextInput * mEditor_Bounce;
+BetaGUI::Button * mEditor_Bounce_set;
+BetaGUI::Button * mEditor_Bounce_set_up;
+BetaGUI::Button * mEditor_Bounce_set_down;
+
+BetaGUI::TextInput * mEditor_Static_Friction;
+BetaGUI::Button * mEditor_Static_Friction_set;
+BetaGUI::Button * mEditor_Static_Friction_set_up;
+BetaGUI::Button * mEditor_Static_Friction_set_down;
+
+BetaGUI::TextInput * mEditor_Dynamic_Friction;
+BetaGUI::Button * mEditor_Dynamic_Friction_set;
+BetaGUI::Button * mEditor_Dynamic_Friction_set_up;
+BetaGUI::Button * mEditor_Dynamic_Friction_set_down;
+
+Ogre::OverlayContainer * mEditor_TargetBody;
+Ogre::OverlayContainer * mEditor_TargetMaterial;
+*/
+
+/*
+void createPicker ()
+{
+SceneNode * mNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("raycasterNode");
+Entity * mEntity = mSceneMgr->createEntity("raycasterEnt", "nx.raycaster.mesh");
+mNode->attachObject(mEntity);
+mNode->setPosition(Vector3(0, 0.5, 0));
+
+_mTargetNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("targetNode");
+Entity * mTargetEntity = mSceneMgr->createEntity("targetEntity", "nx.crosshair.mesh");
+_mTargetNode->attachObject(mTargetEntity);
+_mTargetNode->setPosition(Vector3(0, 0.5, 0));
+_mTargetNode->scale(4, 4, 4);
+_target_LastPosition = mNode->getPosition();
+
+_mCaster = mScene->createRayCaster("mouse", Vector3(0, 0.5, 0), Vector3::UNIT_X, 25);
+}
+*/
+            void setDFriction ( Real f )
+                {
+                    material * mat = _oldTargetBody->getMaterial();
+
+                    if ( mat
+                             == 0 ) // If 0 is returned then, it has two or more shapes with seperate materials.		
+                        return;
+
+                    mat->setDynamicFriction(f);
+                }
+
+            void setSFriction ( Real f )
+                {
+                    material * mat = _oldTargetBody->getMaterial();
+
+                    if ( mat
+                             == 0 ) // If 0 is returned then, it has two or more shapes with seperate materials.		
+                        return;
+
+                    mat->setStaticFriction(f);
+                }
+
+            void setBounce ( Real b )
+                {
+                    material * mat = _oldTargetBody->getMaterial();
+
+                    if ( mat
+                             == 0 ) // If 0 is returned then, it has two or more shapes with seperate materials.
+                        return;
+
+                    mat->setBounce(b);
+                }
+
+            void checkMaterial ()
+                {
+                    if ( _targetBody == 0 )
+                        return;
+
+                    if ( _targetBody == _oldTargetBody )
+                        return;
+
+                    _oldTargetBody = _targetBody;
+                }
+                
+                
+                
+                
+ /*
+                                otIntermissionSubText->setText("CCC");
+                                otIntermissionSubText->setHeight(50);
+                                otIntermissionSubText->setPos(640,191);
+                                otIntermissionSubText->setAlign(TextAreaOverlayElement::Alignment::Left);
+                                */
+                                /*
+                                if (isKeyDown(MOVE_UP))
+                                {
+                                    intermissionPOS.y += 1;
+                                    writeDebug = true;
+                                }else if (isKeyDown(MOVE_DOWN))
+                                {
+                                    intermissionPOS.y -= 1;
+                                    writeDebug = true;
+                                }else if (isKeyDown(MOVE_LEFT))
+                                {
+                                    intermissionPOS.x -=1;
+                                    writeDebug = true;
+                                }else if (isKeyDown(MOVE_RIGHT))
+                                {
+                                    intermissionPOS.x +=1;
+                                    writeDebug = true;
+                                }
+        
+                                if (writeDebug)
+                                {
+                                    otIntermissionSubText->setPos(intermissionPOS.x,intermissionPOS.y);
+                                    LogManager::getSingleton().logMessage("pos:" + StringConverter::toString(intermissionPOS.x) + ":" + StringConverter::toString(intermissionPOS.y));
+                                }
+                                */                
